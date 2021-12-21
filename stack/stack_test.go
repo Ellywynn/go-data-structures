@@ -10,7 +10,7 @@ import (
 func TestStack(t *testing.T) {
 	// Create the stack
 	s := stack.New()
-	assert.Equal(t, 0, s.Size)
+	assert.Equal(t, 0, s.Size())
 
 	// Pop and Peek empty stack
 	_, err := s.Pop()
@@ -38,5 +38,5 @@ func TestStack(t *testing.T) {
 	assert.Equal(t, 4, pop2)
 
 	// Size
-	assert.Equal(t, 3, s.Size)
+	assert.Equal(t, 3, s.Size())
 }
