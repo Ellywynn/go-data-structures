@@ -7,50 +7,49 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func fillTree() *btree.BTree {
-	tree := btree.New()
+func fillTree() *btree.Node {
+	tree := btree.New(20)
 
-	tree.Add(20)
-	tree.Add(14)
-	tree.Add(15)
-	tree.Add(25)
-	tree.Add(4)
-	tree.Add(30)
-	tree.Add(17)
+	tree.Insert(14)
+	tree.Insert(15)
+	tree.Insert(25)
+	tree.Insert(4)
+	tree.Insert(30)
+	tree.Insert(17)
 
 	return tree
 }
 
-func TestBTree_Add(t *testing.T) {
-	tree := btree.New()
-	assert.Nil(t, tree.Root())
+func TestBTree_Insert(t *testing.T) {
+	tree := btree.New(10)
+	assert.NotNil(t, tree)
+	assert.Equal(t, 10, tree.Value)
 
-	tree.Add(10)
-	assert.NotNil(t, tree.Root())
-	assert.Equal(t, 10, tree.Root().Value)
+	tree.Insert(5)
+	assert.NotNil(t, tree.Left)
+	assert.Equal(t, 5, tree.Left.Value)
 
-	tree.Add(5)
-	assert.NotNil(t, tree.Root().Left)
-	assert.Equal(t, 5, tree.Root().Left.Value)
+	tree.Insert(15)
+	assert.NotNil(t, tree.Right)
+	assert.Equal(t, 15, tree.Right.Value)
 
-	tree.Add(15)
-	assert.NotNil(t, tree.Root().Right)
-	assert.Equal(t, 15, tree.Root().Right.Value)
-
-	tree.Add(3)
-	assert.NotNil(t, tree.Root().Left.Left)
-	assert.Equal(t, 3, tree.Root().Left.Left.Value)
+	tree.Insert(3)
+	assert.NotNil(t, tree.Left.Left)
+	assert.Equal(t, 3, tree.Left.Left.Value)
 }
 
-func TestBTree_FindNode(t *testing.T) {
+func TestBTree_Search(t *testing.T) {
 	tree := fillTree()
 
-	node := tree.FindNode(10)
-	assert.Nil(t, node)
+	found := tree.Search(10)
+	assert.False(t, found)
 
-	node = tree.FindNode(15)
-	assert.NotNil(t, node)
+	found = tree.Search(15)
+	assert.True(t, found)
 
-	node = tree.FindNode(20)
-	assert.NotNil(t, node)
+	found = tree.Search(20)
+	assert.True(t, found)
+
+	found = tree.Search(0)
+	assert.False(t, found)
 }
