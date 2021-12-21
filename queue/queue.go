@@ -1,6 +1,8 @@
 package queue
 
-import "errors"
+import (
+	"errors"
+)
 
 var (
 	errEmptyQueue = errors.New("the queue is empty")
@@ -57,10 +59,13 @@ func (q *Queue) PushBack(values ...int) {
 
 // Appends an element to the end of the queue
 func (q *Queue) PushFront(values ...int) {
-	q.size += len(values)
+	n := len(values)
+	q.size += n
 	temp := make([]int, q.size)
-	temp = append(temp, values...)
-	temp = append(temp, (q.values)...)
+	copy(temp, values)
+	for i, v := range q.values {
+		temp[i+n] = v
+	}
 	q.values = temp
 }
 
